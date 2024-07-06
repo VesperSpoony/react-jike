@@ -102,7 +102,7 @@ const Article = () => {
   const [list, setList] = useState([])
   const [count, setCount] = useState(0)
   useEffect(() => {
-    async function getList () {
+    async function getList() {
       const res = await getArticleListAPI(reqData)
       setList(res.data.results)
       setCount(res.data.total_count)
@@ -127,12 +127,13 @@ const Article = () => {
   }
 
   // 分页
-  const onPageChange = (page) => {
-    console.log(page)
+  const onPageChange = (page, pageSize) => {
+    console.log(page, pageSize)
     // 修改参数依赖项 引发数据的重新获取列表渲染
     setReqData({
       ...reqData,
-      page
+      page,
+      per_page: pageSize
     })
   }
 
@@ -191,6 +192,7 @@ const Article = () => {
         <Table rowKey="id" columns={columns} dataSource={list} pagination={{
           total: count,
           pageSize: reqData.per_page,
+          pageSizeOptions: [4, 10, 20, 50],
           onChange: onPageChange
         }} />
       </Card>
